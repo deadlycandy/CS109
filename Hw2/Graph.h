@@ -28,7 +28,7 @@ class Graph{
       int V();
       int E();
       bool adjacent(int x, int y);
-      int neighbors(int x);
+      vector<int> neighbors(int x);
 	
       //Manipulation Functions 
       void add(int x, int y);
