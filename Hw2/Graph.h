@@ -34,6 +34,7 @@ class Graph{
       void add(int x, int y);
       void remove(int x, int y);
       void randomGraph(float edgeDen, int distDen);
+      void printG();
 
       //Get and set functions 
       int get_node_value(int x);
