@@ -8,7 +8,8 @@ Rabhatna
 #include <string>
 #include <vector>
 #include "Graph.h"
-
+#include <ctime>
+#include <random>
 
 //Constructor
 Graph::Graph(int n){
@@ -51,18 +52,28 @@ void Graph::remove(int x, int y){
 }
 
 void Graph::randomGraph(float edgeDen, int distRange){
-   srand(time(NULL));
-   int edgeDensity = this->vertices * edgeDen;
+   mt199937 generator(NULL);
+   float edgeDensity = this->vertices * edgeDen;
    int totalEdges = edgeDensity * this->vertices;
+   uniform_real_distribution<double> dis(0.0, edgeDensity);
+   uniform_real_distribution<int> disN(1, this->vertices);  
+   uniform-real_distribution<int> disR(1, distRange);
 
    for(int i = 1; i <= this->adj.size(); i++){
-      int edgeNum = rand() %edgeDensity+1;
+      int edgeNum = dis(generator);
       int j = 1;
       while(j <= edgeNum){
-         int node = rand() % this->vertices + 1;
+         int node = disN(generator);
          if(!this->adjacent(i,node) && i != node){
-            this->adj[i][node] = rand() % distRange + 1;
-            j++;
+            int counter = 0;
+            vector<int> temp = this->neighbors(node);
+            for(int k = 1; k <=temp.size(); k++){
+               counter++;
+            }
+	    if(counter < edgeDensity){
+               this->adj[i][node] = disR(generator);
+               j++;
+            }
          }
       }
    }
