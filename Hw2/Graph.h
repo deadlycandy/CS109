@@ -22,7 +22,7 @@ class Graph{
    public:
       //Constructors and Destructor
       Graph(int n=0);
-      //freeGraph();
+    
 
       //Access Functions
       int V();
@@ -33,6 +33,7 @@ class Graph{
       //Manipulation Functions 
       void add(int x, int y);
       void remove(int x, int y);
+      void randomGraph(float edgeDen, int distDen);
 
       //Get and set functions 
       int get_node_value(int x);

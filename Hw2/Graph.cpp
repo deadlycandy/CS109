@@ -21,7 +21,7 @@ Graph::Graph(int n){
 
 //Manipulation Functions
 void Graph::add(int x, int y){
-   for(int i = 1; i <= adj.size(); i++){
+ /*  for(int i = 1; i <= adj.size(); i++){
       for(int j = 1; j <= adj[i].size(); j++){
          if(x == i && y == j){
             if(adj[i][j] == 0){
@@ -31,18 +31,38 @@ void Graph::add(int x, int y){
             }
          }
       }
-   }
+   }*/
+   this->adj[x][y] = 1;
 }
 
 void Graph::remove(int x, int y){
-   for(int i = 1; i <= adj.size(); i++){
+   /*for(int i = 1; i <= adj.size(); i++){
       for(int j = 1; j <= adj[i].size(); j++){
          if(x == i && y == j){
             if(adj[i][j] == 0){
                cout << "del" << this->adj[i][j] << "\n";
-               this->adj[i][j] = 1;
+               this->adj[i][j] = 0;
                cout << this->adj[i][j] << "\n";
             }
+         }
+      }
+   }*/
+   this->adj[x][y] = 0;
+}
+
+void Graph::randomGraph(float edgeDen, int distRange){
+   srand(time(NULL));
+   int edgeDensity = this->vertices * edgeDen;
+   int totalEdges = edgeDensity * this->vertices;
+
+   for(int i = 1; i <= this->adj.size(); i++){
+      int edgeNum = rand() %edgeDensity+1;
+      int j = 1;
+      while(j <= edgeNum){
+         int node = rand() % this->vertices + 1;
+         if(!this->adjacent(i,node) && i != node){
+            this->adj[i][node] = rand() % distRange + 1;
+            j++;
          }
       }
    }
