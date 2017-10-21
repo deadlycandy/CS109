@@ -52,12 +52,12 @@ void Graph::remove(int x, int y){
 }
 
 void Graph::randomGraph(float edgeDen, int distRange){
-   mt199937 generator(NULL);
+   mt19937 generator(time(NULL));
    float edgeDensity = this->vertices * edgeDen;
    int totalEdges = edgeDensity * this->vertices;
    uniform_real_distribution<double> dis(0.0, edgeDensity);
-   uniform_real_distribution<int> disN(1, this->vertices);  
-   uniform-real_distribution<int> disR(1, distRange);
+   uniform_int_distribution<int> disN(1, this->vertices);  
+   uniform_int_distribution<int> disR(1, distRange);
 
    for(int i = 1; i <= this->adj.size(); i++){
       int edgeNum = dis(generator);
