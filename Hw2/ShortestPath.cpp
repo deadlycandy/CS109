@@ -4,62 +4,59 @@ shortestPath.cpp
 Hw2
 */
 
-#include <iostrea>
+#include <iostream>
 #include <queue>
 #include <vector>
-#include <utlity>
-
+#include <utility>
+#include "Graph.h"
 
 const int INF = 9999;
 
 using namespace std;
 
 //function defintions 
-vector<int> vertices(vector<int> list);
-
-vector<int> path(int u, int w);
-
-int pathSize(int u, int w);
 
 
-vector<int> path(int u, int w){
-   std::priority_queue<pair<int,int>, std::vector<pair<int, int> >, std::greater<pair<int, int> > q;
-   vector<int> dist;
-   vector<int> prev;
-   vector<int> path;
+vector<int> path(Graph G, int u, int w){
+   priority_queue< pair<int,int>, vector<pair<int, int> >, std::greater<pair<int, int> > > q;
+   vector<int> dist(G.V());
+   vector<int> prev(G.V());
+   vector<int> path(G.V());
 
-   for(int v = 1; v <= this.V(); v++){
+   for(int v = 0; v < G.V(); v++){
       if(v != u){
          dist[v] = INF;
-         prev[v] = NULL;
+         prev[v] = -1;
          pair<int, int> nodeV(INF, v);
       }
    }
-
-   pair<int,int> nodeU = (0,u);
+cout << "1" << endl;
+   pair<int,int> nodeU(0,u);
    dist[u] = 0;
-   prev[u] = NULL;
+   prev[u] = -1;
    q.push(nodeU);
 
-   while !q.empty(){
-      u = q.pop();  
-      
+   while (!q.empty()){
+      pair<int,int> u(q.top());
+          q.pop();  
+cout << "2" << endl;      
       if(prev[u.second] == w){
          int backptr = u.second;
-         while (prev[backptr] != NULL){
+         while (prev[backptr] != -1){
             path.insert(path.begin(), backptr);
             backptr = prev[backptr];
          }
          return path;
       }
-
-      neighbors = this.neighbors(u.second);
-      for(int v = 1; v <= neighbors.size(); v++){
-         newDist = dist[u.second] + this.get_edge_value(u.second, v);
+cout << "3" << endl;
+      vector<int> neighbors = G.neighbors(u.second);
+cout << "4" << endl;
+      for(int v = 0; v < neighbors.size(); v++){
+         int newDist = dist[u.second] + G.get_edge_value(u.second, v);
          if(newDist < dist[v]){
             dist[v] = newDist;
             prev[v] = u.second;
-	    pair<int, int> newNode = (newDist, v);
+	    pair<int, int> newNode(newDist, v);
 	    q.push(newNode);
          }
       }
@@ -69,8 +66,8 @@ vector<int> path(int u, int w){
 }
  
 
-int pathSzie(int u, int w){
-   vector<int> path = this.path(u, w);
+/*int pathSize(Graph G, int u, int w){
+   vector<int> path = path(G,u, w);
    return path.size();	
-}
+}*/
 
