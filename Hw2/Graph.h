@@ -27,20 +27,20 @@ class Graph{
       //Access Functions
       int V();
       int E();
-      bool adjacent(unsigned int x, unsigned int y);
-      vector<int> neighbors(unsigned int x);
+      bool adjacent(int x, int y);
+      vector<int> neighbors(int x);
 	
       //Manipulation Functions 
-      void add(unsigned int x, unsigned int y);
-      void remove(unsigned int x, unsigned int y);
+      void add(int x, int y);
+      void remove(int x, int y);
       void randomGraph(float edgeDen, int distDen);
       void printG();
 
       //Get and set functions 
-      int get_node_value(unsigned int x);
-      void set_node_value(unsigned int x, int a);
-      int get_edge_value(unsigned int x, unsigned int y);
-      void set_edge_value(unsigned int x, unsigned int y, int v);      
+      int get_node_value( int x);
+      void set_node_value(int x, int a);
+      int get_edge_value(int x, int y);
+      void set_edge_value(int x, int y, int v);      
 
 };
 #endif
