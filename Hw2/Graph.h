@@ -14,7 +14,7 @@ using namespace std;
 
 class Graph{
    private:
-      vector< vector<int> > adj;
+      vector< vector<float> > adj;
       vector<int> nodeData;
       int vertices;
       int edges;
@@ -28,19 +28,19 @@ class Graph{
       int V();
       int E();
       bool adjacent(int x, int y);
-      vector<int> neighbors(int x);
+      vector<float> neighbors(int x);
 	
       //Manipulation Functions 
       void add(int x, int y);
       void remove(int x, int y);
-      void randomGraph(float edgeDen, int distDen);
+      void randomGraph(float edgeDen, float distDen);
       void printG();
 
       //Get and set functions 
       int get_node_value( int x);
       void set_node_value(int x, int a);
-      int get_edge_value(int x, int y);
-      void set_edge_value(int x, int y, int v);      
+      float get_edge_value(int x, int y);
+      void set_edge_value(int x, int y, float v);      
 
 };
 #endif

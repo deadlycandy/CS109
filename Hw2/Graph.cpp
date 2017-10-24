@@ -15,7 +15,7 @@ Rabhatna
 
 //Constructor
 Graph::Graph(int n){ 
-   adj.resize(n,vector<int>(n,0)); // range 0 to n (n noninclusive)
+   adj.resize(n,vector<float>(n,0)); // range 0 to n (n noninclusive)
    nodeData.resize(n+1);
    vertices = n;
    edges = 0;
@@ -27,7 +27,7 @@ Graph::Graph(int n){
 void Graph::add(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       if(!this->adjacent(x,y)){
-         this->adj[x][y] = 1;
+         this->adj[x][y] = 1.0;
       }
    }
 }
@@ -40,18 +40,18 @@ void Graph::remove(int x, int y){
 }
 
 //Generates a random graph
-void Graph::randomGraph(float edgeDen, int distRange){
+void Graph::randomGraph(float edgeDen, float distRange){
    //Random number generator
    default_random_engine generator(time(NULL));
 
    
-   float edgeDensity = ceil(this->vertices * edgeDen);
+   int edgeDensity = ceil(this->vertices * edgeDen);
    int totalEdges = edgeDensity * this->vertices;
 
    //Number generators with different ranges
    uniform_int_distribution<int> dis(1, edgeDensity);
    uniform_int_distribution<int> disN(1, this->vertices);  
-   uniform_int_distribution<int> disR(1, distRange);
+   uniform_real_distribution<float> disR(1, distRange);
 
    //Loops through all nodes
    for(int i = 0; i < this->adj.size(); i++){
@@ -63,7 +63,7 @@ void Graph::randomGraph(float edgeDen, int distRange){
          int node = disN(generator);
          if(!this->adjacent(i,node) && i != node){
             int counter = 0;
-            vector<int> temp = this->neighbors(node);
+            vector<float> temp = this->neighbors(node);
             for(int k = 0; k < temp.size(); k++){
                if(temp[k] > 0){
                   counter++;
@@ -88,7 +88,7 @@ void Graph::set_node_value(int x, int a){
 }
 
 //Checks input and sets edge value
-void Graph::set_edge_value(int x, int y, int v){
+void Graph::set_edge_value(int x, int y, float v){
   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
      this->adj[x][y] = v;
   }
@@ -110,7 +110,7 @@ void Graph::printG(){
 //Checks input and if two nodes are connected
 bool Graph::adjacent(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
-      if(this->adj[x][y] != 0){
+      if(this->adj[x][y] > 0){
          return true;
       }
    }
@@ -118,8 +118,8 @@ bool Graph::adjacent(int x, int y){
 }
 
 //Checks input and returns the nodes row
-vector<int> Graph::neighbors(int x){
-   vector<int> temp(this->vertices);
+vector<float> Graph::neighbors(int x){
+   vector<float> temp(this->vertices);
    if(0 <= x && x < this->vertices){
       for(int j = 0; j < this->adj[x].size(); j++){
          temp[j] = this->adj[x][j];
@@ -147,7 +147,7 @@ int Graph::get_node_value(int x){
 }
 
 //Checks input and returns edge value
-int Graph::get_edge_value(int x, int y){
+float Graph::get_edge_value(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       return this->adj[x][y];
    }

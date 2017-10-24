@@ -10,84 +10,87 @@ Hw2
 #include <utility>
 #include "Graph.h"
 
-const int INF = 9999;
+const float INF = 9999;
 vector<int> path(Graph G, int source, int w);
 
 using namespace std;
 
 //function defintions 
 int main(){
-   Graph G(10);
-   G.randomGraph(.5, 10);
-   G.add(0,1);
-   G.add(1,3);
-   G.add(3,2);
-   G.add(2,4);
-   //path 0 - 3 - 2 - 4 or 0 - 1 - 3 - 2 - 4 
+   Graph G(5);
+   G.randomGraph(.35, 10);
    G.printG();
 
-   vector<int> temp = path(G,0,4);
-   cout << "back in main" << endl;
-
-      for(int i = 0; i < temp.size(); i++){
+   vector<int> temp = path(G,0,90);
+/*   cout << "back in main" << endl;
+      int i = 0;
+      for(; i < temp.size()-1; i++){
          cout << temp[i] << " ";
       } 
    cout << endl;
-   return 0;
+   i++;
+   cout << "Path cost: " << temp[i] << endl;
+  */ return 0;
 }
 
 vector<int> path(Graph G, int source, int w){
-   priority_queue< pair<int,int>, vector<pair<int, int> >, std::greater<pair<int, int> > > q;
-   vector<int> dist(G.V());
+   priority_queue< pair<float,int>, vector<pair<float, int> >, std::greater<pair<float, int> > > q;
+   vector<float> dist(G.V());
    vector<int> prev(G.V());
    vector<int> path;
+   if(0 <= source && source < G.V() && 0 <= w && w < G.V()){   
 
-   for(int v = 0; v < G.V(); v++){
-      if(v != source){
-         dist[v] = INF;
-         prev[v] = -1;
-         pair<int, int> nodeV(INF, v);
-      }
-   }
-   pair<int,int> nodeU(0, source);
-   dist[source] = 0;
-   prev[source] = -1;
-   q.push(nodeU);
-
-   //for(int k = 0; k < 10; k++){
-   while (!q.empty()){
-      pair<int,int> u(q.top());
-          q.pop();  
-//cout << "u: " << u.second << " w: " << w << endl;      
-      if(prev[w] != -1){
-         int backptr = w;
-         cout << "prev " << prev[w] << endl;
-         while (prev[backptr] != -1){
-            path.insert(path.begin(), backptr);
-            backptr = prev[backptr];
+      for(int v = 0; v < G.V(); v++){
+         if(v != source){
+            dist[v] = INF;
+            prev[v] = -1;
+            pair<float, int> nodeV(INF, v);
          }
-         path.insert(path.begin(), source);
-         return path;
       }
-      vector<int> neighbors = G.neighbors(u.second);
-      for(int v = 0; v < neighbors.size(); v++){
-         if(G.adjacent(u.second, v)){
-            int newDist = dist[u.second] + G.get_edge_value(u.second, v); 
-//cout << "Dist u.s: " << dist[u.second] << " Get edge: " << G.get_edge_value(u.second, v) << endl; 
-//cout << "new dist: " << newDist << " Dist v: " << dist[v] << endl;
-            if(newDist < dist[v]){
-               dist[v] = newDist;
-               prev[v] = u.second;
-	       pair<int, int> newNode(newDist, v);
-	       q.push(newNode);
-            }
-          }
-      }
+      pair<float,int> nodeU(0.0, source);
+      dist[source] = 0;
+      prev[source] = -1;
+      q.push(nodeU);
 
+      while (!q.empty()){
+         pair<float,int> u(q.top());
+         q.pop();  
+//cout << " U: " << u.first << " " << u.second << endl;
+//cout << "prev: " << prev[67] << endl;
+         if(prev[w] != -1){
+            int backptr = w;
+            float pathCost; 
+            pathCost += dist[backptr];
+            while (prev[backptr] != -1){
+               path.insert(path.begin(), backptr);
+               pathCost += dist[backptr];
+               backptr = prev[backptr];
+            }
+         //path.insert(path.begin(), source);
+            path.push_back(pathCost);
+            return path;
+         }
+         vector<float> neighbors = G.neighbors(u.second);
+         for(int v = 0; v < neighbors.size(); v++){
+//cout << " V : " << v;
+            if(G.adjacent(u.second, v)){
+               float newDist = dist[u.second] + G.get_edge_value(u.second, v); 
+               if(newDist < dist[v]){
+                  dist[v] = newDist;
+                  prev[v] = u.second;
+	          pair<float, int> newNode(newDist, v);
+	          q.push(newNode);
+               }
+            }
+         }
+      }
+      cout << "No Path" << endl;
+      return path;
    }
-  cout << "No Path" << endl;
-  return path;
+   cout << "Indexes out of bound. No path" << endl;
+   return path;
 }
+
  
 
 /*int pathSize(Graph G, int u, int w){
