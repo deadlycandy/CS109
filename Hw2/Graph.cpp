@@ -25,14 +25,16 @@ Graph::Graph(int n){
 
 //Checks input and adds edge between valid indexs
 void Graph::add(int x, int y){
-   if(1 <= x && x < this->vertices && 1 <= y && y < this->vertices){
-      this->adj[x][y] = 1;
+   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+      if(!this->adjacent(x,y)){
+         this->adj[x][y] = 1;
+      }
    }
 }
 
 //Checks input and removes edge between valid indexs
 void Graph::remove(int x, int y){
-   if(1 <= x && x < this->vertices && 1 <= y && y < this->vertices){
+   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       this->adj[x][y] = 0;
    }
 }
@@ -43,7 +45,7 @@ void Graph::randomGraph(float edgeDen, int distRange){
    default_random_engine generator(time(NULL));
 
    
-   float edgeDensity = this->vertices * edgeDen;
+   float edgeDensity = ceil(this->vertices * edgeDen);
    int totalEdges = edgeDensity * this->vertices;
 
    //Number generators with different ranges
@@ -80,14 +82,14 @@ void Graph::randomGraph(float edgeDen, int distRange){
 
 //Checks input and sets node value
 void Graph::set_node_value(int x, int a){ 
-   if(1 <= x && x < this->vertices){
+   if(0 <= x && x < this->vertices){
       this->nodeData[x] = a;
    }
 }
 
 //Checks input and sets edge value
 void Graph::set_edge_value(int x, int y, int v){
-  if(1 <= x && x < this->vertices && 1 <= y && y < this->vertices){
+  if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
      this->adj[x][y] = v;
   }
 }
@@ -138,16 +140,16 @@ int Graph::E(){
 
 //Checks input and returns node value
 int Graph::get_node_value(int x){ 
-   if(1 <= x && x < this->vertices){
+   if(0 <= x && x < this->vertices){
       return this->nodeData[x];
    }
-   return -1;
+   return 0;
 }
 
 //Checks input and returns edge value
 int Graph::get_edge_value(int x, int y){
-   if(1 <= x && x < this->vertices && 1 <= y && y < this->vertices){
+   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       return this->adj[x][y];
    }
-   return -1; 
+   return 0; 
 }
