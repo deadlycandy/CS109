@@ -11,7 +11,7 @@ Rabhatna
 #include <ctime>
 #include <random>
 #include <cmath>
-#include <typeinfo>
+
 
 //Constructor
 Graph::Graph(int n){ 
@@ -112,6 +112,8 @@ bool Graph::adjacent(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       if(this->adj[x][y] > 0){
          return true;
+      }else if( this->adj[y][x]){
+         return true;
       }
    }
   return false;  
@@ -149,7 +151,11 @@ int Graph::get_node_value(int x){
 //Checks input and returns edge value
 float Graph::get_edge_value(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
-      return this->adj[x][y];
+       if(this->adj[x][y] > 0){
+          return this->adj[x][y];
+       }else if(this->adj[y][x] > 0){
+          return this->adj[y][x];
+       }
    }
    return 0; 
 }

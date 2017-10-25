@@ -10,47 +10,86 @@ Hw2
 #include <utility>
 #include "Graph.h"
 
+//Used to establish undiscovered distances
 const float INF = 9999;
-vector<int> path(Graph G, int source, int w);
+
+// Functon definition 
+vector<float> path(Graph G, int source, int w);
 
 using namespace std;
 
-//function defintions 
+//Main for the entire program 
 int main(){
-   Graph G(10);
+
+   //Creates a random graph, finds path from 0 to n, then unpacks the returned data
+
+   //Graph with .20 density and 10 distance range
+   cout << endl << "Graph 1" << endl;
+   Graph G(50);
    G.randomGraph(.20, 10);
-   
    cout << endl;
    G.printG();
    cout << endl;
    float avgG = 0;
+   int numPath = 0;
    for(int i = 0; i < G.V(); i++){
-      cout << endl << i+1 << ": ";
-      vector<int> temp = path(G,0, i);
+      cout << endl << i << ": ";
+      vector<float> temp = path(G,0, i);
       for(int it = 0; it < temp.size(); it++){
-           cout << temp[it] << " ";
-/*         if(k ==temp.size()-1){
-            cout << "\nPath cost: " << temp[k] << endl;
-            avgG += temp[k];
+         if(it ==temp.size()-1){
+            cout << "\nPath cost: " << temp[it] << endl;
+            numPath++;
+            avgG += temp[it];
          }else{
-            cout << temp[i] << " ";
-         }*/
+            cout << temp[it] << " ";
+         }
       }
     } 
-   cout << endl << "Average cost of path: " << avgG << endl;
+   cout << endl << "Average cost of path: " << avgG/numPath << endl;
 
-
+   //Graph with .40 density and 10 distance range 
+   cout << endl << "Graph 2" << endl;
+   Graph G1(50);
+   G1.randomGraph(.40, 10);
+   cout << endl;
+   G1.printG();
+   cout << endl;
+   float avgG1 = 0;
+   int numPath1 = 0;
+   for(int i = 0; i < G1.V(); i++){
+      cout << endl << i << ": ";
+      vector<float> temp = path(G1,0, i);
+      for(int it = 0; it < temp.size(); it++){
+         if(it ==temp.size()-1){
+            cout << "\nPath cost: " << temp[it] << endl;
+            numPath1++;
+            avgG1 += temp[it];
+         }else{
+            cout << temp[it] << " ";
+         }
+      }
+    } 
+   cout << endl << "Average cost of path: " << avgG1/numPath1 << endl;
 
    return 0;
 }
 
-vector<int> path(Graph G, int source, int w){
+/*
+Utilizes Dijkstra's shortest path algorithm to compute the shortest path between two points. 
+
+Function returns the path from source to destination with the cost of the path appended at the end.
+
+Checks for valid input, to prevent bad data
+*/
+
+vector<float> path(Graph G, int source, int w){
+   //using STL priority queue and storing pairs with priority being a float and int being the node
    priority_queue< pair<float,int>, vector<pair<float, int> >, std::greater<pair<float, int> > > q;
    vector<float> dist(G.V(),INF);
    vector<int> prev(G.V(),-1);
-   vector<int> path(G.V());
-   if(0 <= source && source < G.V() && 0 <= w && w < G.V()){   
+   vector<float> path(G.V());
 
+   if(0 <= source && source < G.V() && 0 <= w && w < G.V()){   
       for(int v = 0; v < G.V(); v++){
          if(v != source){
             dist[v] = INF;
@@ -59,6 +98,7 @@ vector<int> path(Graph G, int source, int w){
             q.push(nodeV);
          }
       }
+
       pair<float,int> nodeU(0.0, source);
       dist[source] = 0;
       prev[source] = -1;
@@ -67,33 +107,26 @@ vector<int> path(Graph G, int source, int w){
       while (!q.empty()){
          pair<float,int> u(q.top());
          q.pop();  
-//cout << " U: " << u.first << " " << u.second << endl;
+         
+         //Termination sequence, checks if destination has been found.
          if(prev[w] != -1){
-//cout << endl << "prev: " << prev[w] << endl;
             int backptr = w;
             float pathCost; 
-           int i = 0;
+            int i = 0;
             pathCost += dist[backptr];
-///cout << endl << "Path Cost: " << pathCost << endl;
             while (prev[backptr] != -1){
-//cout << endl << "backptr: " << backptr << endl;
-               path[i] = backptr;
-               pathCost += dist[backptr];
+               path.insert(path.begin(), backptr);
                backptr = prev[backptr];
-            i++;
+               i++;
             }
-         //path.insert(path.begin(), source);
-           // path.push_back(pathCost);
-/*for(int i = 0; i < path.size(); i++){
-cout<< endl << "p :" << path[i] << endl;
-}*/
+            pathCost = dist[w];
+            path[i++] = pathCost;
             path.resize(i);
             return path;
          }
+
          vector<float> neighbors = G.neighbors(u.second);
-//cout << endl << "Neighbors: " << neighbors.size() << endl;
          for(int v = 0; v < neighbors.size(); v++){
-//cout << " V : " << v;
             if(G.adjacent(u.second, v)){
                float newDist = dist[u.second] + G.get_edge_value(u.second, v); 
                if(newDist < dist[v]){
@@ -106,16 +139,13 @@ cout<< endl << "p :" << path[i] << endl;
          }
       }
       cout << "No Path" << endl;
+      path.resize(0);
       return path;
    }
    cout << "Indexes out of bound. No path" << endl;
+   path.resize(0);
    return path;
 }
 
  
-
-/*int pathSize(Graph G, int u, int w){
-   vector<int> path = path(G,u, w);
-   return path.size();	
-}*/
 
