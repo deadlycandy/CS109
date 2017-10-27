@@ -26,7 +26,7 @@ int main(){
    //Graph with .20 density and 10 distance range
    cout << endl << "Graph 1" << endl;
    Graph G(50);
-   G.randomGraph(.20, 10);
+   G.randomGraph(.20f, 10.0f);
    cout << endl;
    G.printG();
    cout << endl;
@@ -50,7 +50,7 @@ int main(){
    //Graph with .40 density and 10 distance range 
    cout << endl << "Graph 2" << endl;
    Graph G1(50);
-   G1.randomGraph(.40, 10);
+   G1.randomGraph(.40f, 10.0f);
    cout << endl;
    G1.printG();
    cout << endl;
