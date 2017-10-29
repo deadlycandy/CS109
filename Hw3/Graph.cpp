@@ -49,14 +49,14 @@ void Graph::randomGraph(float edgeDen, float distRange){
    int totalEdges = edgeDensity * this->vertices;
 
    //Number generators with different ranges
-   uniform_int_distribution<int> dis(1, edgeDensity);
-   uniform_int_distribution<int> disN(1, this->vertices);  
+   uniform_int_distribution<int> dis(0, edgeDensity);
+   uniform_int_distribution<int> disN(0, this->vertices-1);  
    uniform_real_distribution<float> disR(1, distRange);
 
    //Loops through all nodes
    for(int i = 0; i < this->adj.size(); i++){
       int edgeNum = dis(generator);
-      int j = 1; 
+      int j = 0; 
 
       //Runs till edge number has been met
       while(j <= ceil(edgeNum)){
@@ -114,7 +114,7 @@ bool Graph::adjacent(int x, int y){
    if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
       if(this->adj[x][y] > 0){
          return true;
-      }else if( this->adj[y][x]){
+      }else if(this->adj[y][x]){
          return true;
       }
    }
