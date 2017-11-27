@@ -22,7 +22,6 @@ class Graph{
    public:
       //Constructors and Destructor
       Graph(int n=0);
-    
 
       //Access Functions
       int V();

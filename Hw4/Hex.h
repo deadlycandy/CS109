@@ -7,6 +7,7 @@ Hex.h
 #include <iostream>
 #include "Graph.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -16,20 +17,25 @@ using namespace std;
 class Hex{
 
    private:
-      vector< vector <char> > board;
+      vector< vector <string> > board;
       Graph boardGraph;
-      char redPlayer = 'r';
-      char bluePlayer = 'b';
-
+      string redPlayer = "R";
+      string bluePlayer = "B";
+      int size;
+      
+      bool validConnections(int x, int y, string player);
+      int cordToNode(int x, int y);
    public:
       //constructor
       Hex(int size = 0);
 
       //Manipulation functions
-      void playerMove(char player, int x, int y);
+      void playerMove(string player, int x, int y);
 
       //Access functions
       void printBoard();
+      void printBoardGraph();
+      void checkWin();
 
 };
 #endif

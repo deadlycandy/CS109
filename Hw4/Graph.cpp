@@ -16,7 +16,7 @@ Rabhatna
 
 //Constructor
 Graph::Graph(int n){ 
-   adj.resize(n,vector<float>(n,0)); // range 0 to n (n noninclusive)
+   adj.resize(n+1,vector<float>(n+1,0)); // range 0 to n (n noninclusive)
    nodeData.resize(n+1);
    vertices = n;
    edges = 0;
@@ -26,7 +26,7 @@ Graph::Graph(int n){
 
 //Checks input and adds edge between valid indexs
 void Graph::add(int x, int y){
-   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+   if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
       if(!this->adjacent(x,y)){
          this->adj[x][y] = 1.0;
          this->adj[y][x] = 1.0;
@@ -36,7 +36,7 @@ void Graph::add(int x, int y){
 
 //Checks input and removes edge between valid indexs
 void Graph::remove(int x, int y){
-   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+   if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
       this->adj[x][y] = 0;
       this->adj[y][x] = 0;
    }
@@ -87,14 +87,16 @@ void Graph::randomGraph(float edgeDen, float distRange){
 
 //Checks input and sets node value
 void Graph::set_node_value(int x, int a){ 
-   if(0 <= x && x < this->vertices){
+   if(1 <= x && x <= this->vertices){
       this->nodeData[x] = a;
    }
 }
 
 //Checks input and sets edge value
 void Graph::set_edge_value(int x, int y, float v){
-  if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+  if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
+cout << x<< endl;
+cout <<y <<endl;
      this->adj[x][y] = v;
      this->adj[y][x] = v;
   }
@@ -102,8 +104,8 @@ void Graph::set_edge_value(int x, int y, float v){
 
 //Prints graph
 void Graph::printG(){  
-   for(int i = 0; i < this->adj.size(); i++){
-      for(int j = 0; j < this->adj[i].size(); j++){
+   for(int i = 1; i < this->adj.size(); i++){
+      for(int j = 1; j < this->adj[i].size(); j++){
          cout<< this->adj[i][j] << " ";
       }
       cout << "\n";
@@ -115,10 +117,10 @@ void Graph::printG(){
 
 //Checks input and if two nodes are connected
 bool Graph::adjacent(int x, int y){
-   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+   if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
       if(this->adj[x][y] > 0){
          return true;
-      }else if(this->adj[y][x]){
+      }else if(this->adj[y][x] > 0){
          return true;
       }
    }
@@ -128,8 +130,8 @@ bool Graph::adjacent(int x, int y){
 //Checks input and returns the nodes row
 vector<float> Graph::neighbors(int x){
    vector<float> temp(this->vertices);
-   if(0 <= x && x < this->vertices){
-      for(int j = 0; j < this->adj[x].size(); j++){
+   if(1 <= x && x <= this->vertices){
+      for(int j = 1; j <= this->adj[x].size(); j++){
          temp[j] = this->adj[x][j];
       }
    }
@@ -148,7 +150,7 @@ int Graph::E(){
 
 //Checks input and returns node value
 int Graph::get_node_value(int x){ 
-   if(0 <= x && x < this->vertices){
+   if(1 <= x && x <= this->vertices){
       return this->nodeData[x];
    }
    return 0;
@@ -156,7 +158,7 @@ int Graph::get_node_value(int x){
 
 //Checks input and returns edge value
 float Graph::get_edge_value(int x, int y){
-   if(0 <= x && x < this->vertices && 0 <= y && y < this->vertices){
+   if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
        if(this->adj[x][y] > 0){
           return this->adj[x][y];
        }else if(this->adj[y][x] > 0){
