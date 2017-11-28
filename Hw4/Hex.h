@@ -36,7 +36,7 @@ class Hex{
       //Access functions
       void printBoard();
       void printBoardGraph();
-      bool checkWin(int source, int w);
+      bool checkWin(string player);
 
 };
 #endif

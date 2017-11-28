@@ -142,17 +142,55 @@ int Hex::cordToNode(int x, int y){
 
 
 
-bool Hex::checkWin(int source, int w){
+bool Hex::checkWin(string player){
    priority_queue< pair<int,int>, vector<pair<int, int> >, std::greater<pair<int, int> > > q;
    vector<int> dist(this->nodeNum,INF);
    vector<int> prev(this->nodeNum,-10);
    vector<int> path(this->nodeNum);
 
-//cout << "Node Numbers" <<  this->nodeNum << endl;
-//cout << source << endl;
-//cout << w << endl;
+   vector<int> sources(this->board.size());
+   vector<int> destination(this->board.size());
 
-   if(1 <= source && source < this->nodeNum && 1 <= w && w < this->nodeNum){   
+   if(player == this->bluePlayer){
+      for(int i = 1; i < this->board.size(); i++){
+         if(this->board[i][1] == this->bluePlayer){
+            sources.push_back(cordToNode(i,1));
+         }
+      }
+
+      for(int i = 1; i < this->board.size(); i++){
+         if(this->board[i][this->board.size()-1] == this->bluePlayer){
+            destination.push_back(cordToNode(i,this->board.size()-1));
+         }
+      }
+   }else{
+
+      for(int i = 1; i < this->board.size(); i++){
+         if(this->board[1][i] == this->redPlayer){
+            sources.push_back(cordToNode(1,i));
+         }
+      }
+
+      for(int i = 1; i < this->board.size(); i++){
+         if(this->board[this->board.size()-1][i] == this->redPlayer){
+            destination.push_back(cordToNode(this->board.size()-1,i));
+         }
+      }
+   }
+
+   sources.shrink_to_fit();
+   destination.shrink_to_fit();
+   
+   if(destination.size() == 0){
+      return false;
+   }
+
+
+while(sources.size() > 0){
+   int source = sources.back();
+   sources.pop_back();
+
+   if(1 <= source && source < this->nodeNum){//&& 1 <= w && w < this->nodeNum){   
       for(int v = 1; v < this->nodeNum; v++){
          if(v != source){
             dist[v] = INF;
@@ -170,18 +208,17 @@ bool Hex::checkWin(int source, int w){
       while (!q.empty()){
          pair<int, int> u(q.top());
          q.pop();  
-//cout << u.second << endl;         
          //Termination sequence, checks if destination has been found.
-//cout << "prev val " << prev[w] << endl;
-         if(prev[w] != -10){
-            cout << "Win" << endl;
-            return false;
+         for(int i = 0; i < destination.size(); i++){
+            if(prev[destination[i]] != -10){
+               cout << "Win" << endl;
+               return true;
+            }
          }
 
          vector<float> neighbors = this->boardGraph.neighbors(u.second);
          for(int v = 1; v < neighbors.size(); v++){
             if(this->boardGraph.adjacent(u.second, v)){
-//cout << "Looking at adjacent" << endl;
                if(prev[v] == -10){
                   dist[v] = 0;
                   prev[v] = u.second;
@@ -191,14 +228,13 @@ bool Hex::checkWin(int source, int w){
             }
          }
       }
-      cout << "No Path" << endl;
       path.resize(0);
-      return false;
    }else{
-      cout << "Indexes out of bound. No path" << endl;
       path.resize(0);
-   }
-   return false;   
+   }   
+}
+cout<< "No winner" << endl;
+return false;
 }
 
 void Hex::printBoardGraph(){

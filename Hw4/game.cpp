@@ -28,22 +28,22 @@ int main(){
       moves++;
    }*/
 
-   game.playerMove("B", 1,1);
+   game.playerMove("R", 1,1);
 
-   game.playerMove("B", 1,2);
-   game.playerMove("B", 1,3);
+   game.playerMove("R", 1,2);
+   game.playerMove("R", 1,3);
 
-   game.playerMove("B", 1,4);
-   game.playerMove("B", 1,5);
+   game.playerMove("R", 1,4);
+   game.playerMove("R", 1,5);
 
-   game.playerMove("B", 1,6);
-   game.playerMove("B", 1,7);
+   game.playerMove("R", 1,6);
+   game.playerMove("R", 1,7);
 
    game.printBoard();
 
-   game.printBoardGraph();
+//   game.printBoardGraph();
 
-   game.checkWin(1, 7);
+   game.checkWin("R");
 
    return 0;
 }
