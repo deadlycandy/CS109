@@ -20,6 +20,7 @@ using namespace std;
 Hex::Hex(int size){
    board.resize(size+1, vector<string>(size+1, " "));
    boardGraph = Graph(size*size);
+   this->nodeNum = size*size;
    this->size = size;
 }
 
@@ -67,6 +68,7 @@ void Hex::printBoard(){
 }
 
 void Hex::playerMove(string player, int x, int y){
+//cout << "b size" << this->board.size() << endl;
    if(1 <= x && x <= this->board.size() && 1 <= y && y <= this->board.size() && this->board[x][y] == " "){
       this->board[x][y] = player;
       int node = cordToNode(x,y);
@@ -100,29 +102,29 @@ void Hex::playerMove(string player, int x, int y){
          }else{
             if(validConnections(x-1,y,player)){
                int newNode = cordToNode(x-1,y);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             }
             if(validConnections(x-1,y+1,player)){
                int newNode = cordToNode(x-1,y+1);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             }
             if(validConnections(x,y+1,player)){
                int newNode = cordToNode(x,y+1);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             }
             if(validConnections(x+1,y,player)){
                int newNode = cordToNode(x+1,y);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             }
             if(validConnections(x+1,y-1,player)){
                int newNode = cordToNode(x+1,y-1);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             }
             if(validConnections(x,y-1,player)){
                int newNode = cordToNode(x,y-1);
-               this->boardGraph.set_edge_value(newNode,node,-1);
+               this->boardGraph.set_edge_value(newNode,node,2);
             } 
-            this->boardGraph.set_edge_value(node,node,-1);
+            this->boardGraph.set_edge_value(node,node,2);
          }
    }
 }
@@ -140,8 +142,63 @@ int Hex::cordToNode(int x, int y){
 
 
 
-void Hex::checkWin(){
+bool Hex::checkWin(int source, int w){
+   priority_queue< pair<int,int>, vector<pair<int, int> >, std::greater<pair<int, int> > > q;
+   vector<int> dist(this->nodeNum,INF);
+   vector<int> prev(this->nodeNum,-10);
+   vector<int> path(this->nodeNum);
 
+//cout << "Node Numbers" <<  this->nodeNum << endl;
+//cout << source << endl;
+//cout << w << endl;
+
+   if(1 <= source && source < this->nodeNum && 1 <= w && w < this->nodeNum){   
+      for(int v = 1; v < this->nodeNum; v++){
+         if(v != source){
+            dist[v] = INF;
+            prev[v] = -10;
+            pair<int, int> nodeV(INF, v);
+            q.push(nodeV);
+         }
+      }
+
+      pair<int,int> nodeU(0, source);
+      dist[source] = 0;
+      prev[source] = -10;
+      q.push(nodeU);
+
+      while (!q.empty()){
+         pair<int, int> u(q.top());
+         q.pop();  
+//cout << u.second << endl;         
+         //Termination sequence, checks if destination has been found.
+//cout << "prev val " << prev[w] << endl;
+         if(prev[w] != -10){
+            cout << "Win" << endl;
+            return false;
+         }
+
+         vector<float> neighbors = this->boardGraph.neighbors(u.second);
+         for(int v = 1; v < neighbors.size(); v++){
+            if(this->boardGraph.adjacent(u.second, v)){
+//cout << "Looking at adjacent" << endl;
+               if(prev[v] == -10){
+                  dist[v] = 0;
+                  prev[v] = u.second;
+	          pair<int, int> newNode(dist[v], v);
+	          q.push(newNode);
+               }
+            }
+         }
+      }
+      cout << "No Path" << endl;
+      path.resize(0);
+      return false;
+   }else{
+      cout << "Indexes out of bound. No path" << endl;
+      path.resize(0);
+   }
+   return false;   
 }
 
 void Hex::printBoardGraph(){

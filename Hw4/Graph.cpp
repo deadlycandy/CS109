@@ -95,8 +95,6 @@ void Graph::set_node_value(int x, int a){
 //Checks input and sets edge value
 void Graph::set_edge_value(int x, int y, float v){
   if(1 <= x && x <= this->vertices && 1 <= y && y <= this->vertices){
-cout << x<< endl;
-cout <<y <<endl;
      this->adj[x][y] = v;
      this->adj[y][x] = v;
   }

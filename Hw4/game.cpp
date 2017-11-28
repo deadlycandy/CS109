@@ -6,7 +6,7 @@
 using namespace std;
 
 int main(){
-   Hex game(3);
+   Hex game(7);
    
    int moves = 0;
    srand(time(NULL));
@@ -28,23 +28,22 @@ int main(){
       moves++;
    }*/
 
-   game.playerMove("R", 3,3);
-
-   game.playerMove("B", 3,2);
-
-   game.playerMove("R", 3,1);
-
-   game.playerMove("B", 2,3);
-   game.playerMove("R", 2,2);
-
-   game.playerMove("B", 2,1);
-   game.playerMove("R", 1,3);
+   game.playerMove("B", 1,1);
 
    game.playerMove("B", 1,2);
-   game.playerMove("R", 1,1);
+   game.playerMove("B", 1,3);
+
+   game.playerMove("B", 1,4);
+   game.playerMove("B", 1,5);
+
+   game.playerMove("B", 1,6);
+   game.playerMove("B", 1,7);
 
    game.printBoard();
 
    game.printBoardGraph();
+
+   game.checkWin(1, 7);
+
    return 0;
 }

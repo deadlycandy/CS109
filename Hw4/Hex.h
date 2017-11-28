@@ -21,8 +21,9 @@ class Hex{
       Graph boardGraph;
       string redPlayer = "R";
       string bluePlayer = "B";
-      int size;
-      
+      int nodeNum;
+      int size;      
+
       bool validConnections(int x, int y, string player);
       int cordToNode(int x, int y);
    public:
@@ -35,7 +36,7 @@ class Hex{
       //Access functions
       void printBoard();
       void printBoardGraph();
-      void checkWin();
+      bool checkWin(int source, int w);
 
 };
 #endif
